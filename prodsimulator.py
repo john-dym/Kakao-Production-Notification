@@ -8,9 +8,6 @@ start_part_no = randint(1000, 100000)
 MULTIPLES = 50  # Transmissions per line, Usually 30 mins worth of production
 MIN_RUN_QTY = 1600
 
-def debug(var):
-    print(var)
-
 class prod_sim_GUI(EasyFrame):
     def __init__(self):
         EasyFrame.__init__(self, background="#ff91be")
@@ -353,9 +350,12 @@ class prod_sim_GUI(EasyFrame):
                 self.TM_line_203["text"] = ""
                 self.TM_line_204["text"] = ""
 
+            AHK_file_output(prod_list)
             self.update()
         pass
 
+def debug(var):
+    print(var)
 
 # Creates a random production schedule
 def rand_prod_sched(min_run_qty):
@@ -384,7 +384,7 @@ def prod_to_list(prod_sched):
             tm_number += MULTIPLES
     return lyst
 
-# Runs the prod_l
+# Runs the prod schedule one part at a time.
 def prod_run(prod_list):
     parts_per_sec = parts_per_minute / 60
     # while len(prod_list) > 1:
@@ -395,6 +395,23 @@ def prod_run(prod_list):
     else:
         prod_list[1][2] += 1
     time.sleep(1 / parts_per_sec)
+
+# Simulates AutoHotKey output the production screen data to a .txt file to be parsed by the actual notification program
+def AHK_file_output(prod_list):
+    txt_output = ""
+    if len(prod_list) > 20:
+        prod_list_length = 20
+    else:
+        prod_list_length = len(prod_list)
+    for x in range(prod_list_length):
+        for y in range(4):
+            txt_output += str(prod_list[x][y]) + ", "
+        txt_output = txt_output[:-2]
+        txt_output += "\n"
+    f = open("production.txt", "w")
+    f.write(txt_output)
+    f.close()
+
 
 def main():
     test = prod_sim_GUI().mainloop()
