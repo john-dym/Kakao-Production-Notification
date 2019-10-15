@@ -1,3 +1,16 @@
+"""
+Production Simulator
+By: John Morales
+
+Python 3.7.4
+
+Status: Finished
+
+Production Simulator simulates a production status screen and the output of that screen data to a txt file so that a
+Kakao Production Notification logic can be coded. 
+
+"""
+
 from random import randint, choice
 from breezypythongui import EasyFrame # Reference at http://kennethalambert.com/breezypythongui/quickref.html
 import time
@@ -408,6 +421,7 @@ def AHK_file_output(prod_list):
             txt_output += str(prod_list[x][y]) + ", "
         txt_output = txt_output[:-2]
         txt_output += "\n"
+    txt_output = txt_output[:-1]
     f = open("production.txt", "w")
     f.write(txt_output)
     f.close()
